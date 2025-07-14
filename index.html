@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Curricular Agronomía</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-top: 0;
+    }
+    .malla {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .ramo {
+      background-color: #8BC34A;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      width: 250px;
+      transition: transform 0.2s;
+    }
+    .ramo:hover {
+      background-color: #7CB342;
+      transform: scale(1.05);
+    }
+    #info {
+      background-color: white;
+      border-radius: 5px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 30px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular Ingeniería Agronomía</h1>
+  
+  <div class="malla" id="malla-container"></div>
+  
+  <div id="info"></div>
+  
+  <script>
+    const ramos = [
+      { nombre: "BASES DE LA AGRONOMÍA", semestre: "1er semestre", abre: [] },
+      { nombre: "TÉCNICAS DE COMUNICACIÓN", semestre: "1er semestre", abre: ["MANEJOS DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIÓN"] },
+      { nombre: "BIOLOGÍA GENERAL", semestre: "1er semestre", abre: ["ANATOMÍA VEGETAL (AGRONOMÍA)"] },
+      { nombre: "QUIMICA GENERAL", semestre: "1er semestre", abre: ["QUIMICA ORGÁNICA", "ELEMENTOS DE QUÍMICA ANALÍTICA CUANTITATIVA"] },
+      { nombre: "MATEMATICA I", semestre: "1er semestre", abre: ["MATEMATICA II", "FISICA GENERAL"] },
+      { nombre: "COMPLEMENTARIA 1", semestre: "2do semestre", abre: [] },
+      { nombre: "MANEJOS DE TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIÓN", semestre: "2do semestre", abre: [] },
+      { nombre: "ANATOMÍA VEGETAL (AGRONOMÍA)", semestre: "2do semestre", abre: ["BOTÁNICA SISTEMÁTICA"] },
+      { nombre: "MATEMATICA II", semestre: "2do semestre", abre: ["BIOFÍSICA AGRÍCOLA", "CÁLCULO"] },
+      { nombre: "FISICA GENERAL", semestre: "2do semestre", abre: ["BIOFÍSICA AGRÍCOLA"] },
+      { nombre: "QUIMICA ORGÁNICA", semestre: "2do semestre", abre: ["MICROBIOLOGÍA", "BIOQUÍMICA"] },
+      { nombre: "ELEMENTOS DE QUÍMICA ANALÍTICA CUANTITATIVA", semestre: "2do semestre", abre: ["FISIOLOGÍA VEGETAL"] },
+      { nombre: "COMPLEMENTARIA 2", semestre: "3er semestre", abre: [] },
+      { nombre: "COMPLEMENTARIA 3", semestre: "3er semestre", abre: [] },
+      { nombre: "BOTÁNICA SISTEMÁTICA", semestre: "3er semestre", abre: ["TALLER INTEGRADO I"] },
+      { nombre: "BIOFÍSICA AGRÍCOLA", semestre: "3er semestre", abre: ["EDAFOLOGÍA", "TALLER INTEGRADO I"] },
+      { nombre: "CÁLCULO", semestre: "3er semestre", abre: ["MODELACIÓN CARTOGRÁFICA", "ECONOMÍA GENERAL AG"] },
+      { nombre: "MICROBIOLOGÍA", semestre: "3er semestre", abre: ["ANATOMÍA Y FISIOLOGÍA ANIMAL", "FITOPATOLOGÍA GENERAL"] },
+      { nombre: "BIOQUÍMICA", semestre: "3er semestre", abre: ["ANATOMÍA Y FISIOLOGÍA ANIMAL", "FISIOLOGÍA VEGETAL", "GENÉTICA GENERAL", "TALLER INTEGRADO I"] },
+      { nombre: "COMPLEMENTARIA 4", semestre: "4to semestre", abre: [] },
+      { nombre: "BIOESTADÍSTICA", semestre: "4to semestre", abre: ["METODOLOGÍA INVESTIGACIÓN"] },
+      { nombre: "EDAFOLOGÍA", semestre: "4to semestre", abre: ["MECANIZACIÓN AGRÍCOLA", "FERTILIDAD DE SUELOS"] },
+      { nombre: "TALLER INTEGRADO I", semestre: "4to semestre", abre: ["PRÁCTICA PROFESIONAL I"] },
+      { nombre: "MODELACIÓN CARTOGRÁFICA", semestre: "4to semestre", abre: [] },
+      { nombre: "ANATOMÍA Y FISIOLOGÍA ANIMAL", semestre: "4to semestre", abre: ["PRODUCCIÓN ANIMAL"] },
+      { nombre: "FISIOLOGÍA VEGETAL", semestre: "4to semestre", abre: ["FITOPATOLOGÍA GENERAL", "AGROECOLOGÍA", "MALHERBOLOGÍA"] },
+      { nombre: "GENÉTICA GENERAL", semestre: "4to semestre", abre: ["CULTIVOS DE PRIMAVERA", "CULTIVOS DE OTOÑO"] },
+      { nombre: "INGLÉS COMUNICATIVO BÁSICO I", semestre: "5to semestre", abre: ["INGLÉS COMUNICATIVO BÁSICO II"] },
+      { nombre: "MECANIZACIÓN AGRÍCOLA", semestre: "5to semestre", abre: [] },
+      { nombre: "FERTILIDAD DE SUELOS", semestre: "5to semestre", abre: ["CONSERVACIÓN DE SUELOS Y RECURSOS NATURALES", "FORRAJERAS", "FRUTICULTURA GENERAL"] },
+      { nombre: "PRÁCTICA PROFESIONAL I", semestre: "5to semestre", abre: ["PRÁCTICA PROFESIONAL II"] },
+      { nombre: "ECONOMÍA GENERAL AG", semestre: "5to semestre", abre: ["MERCADEO"] },
+      { nombre: "PRODUCCIÓN ANIMAL", semestre: "5to semestre", abre: ["ALIMENTACIÓN ANIMAL"] },
+      { nombre: "AGROECOLOGÍA", semestre: "5to semestre", abre: ["ENTOMOLOGÍA", "CULTIVOS DE PRIMAVERA", "FRUTICULTURA GENERAL", "CULTIVOS DE OTOÑO", "HORTICULTURA"] },
+      { nombre: "FITOPATOLOGÍA GENERAL", semestre: "5to semestre", abre: [] },
+      { nombre: "INGLÉS COMUNICATIVO BÁSICO II", semestre: "6to semestre", abre: ["INGLÉS COMUNICATIVO BÁSICO III"] },
+      { nombre: "CONSERVACIÓN DE SUELOS Y RECURSOS NATURALES", semestre: "6to semestre", abre: ["TALLER INTEGRADO II"] },
+      { nombre: "MERCADEO", semestre: "6to semestre", abre: ["FORMULACIÓN Y EVALUACIÓN DE PROYECTOS"] },
+      { nombre: "ALIMENTACIÓN ANIMAL", semestre: "6to semestre", abre: ["TALLER INTEGRADO II", "FORRAJERAS"] },
+      { nombre: "ENTOMOLOGÍA", semestre: "6to semestre", abre: [] },
+      { nombre: "CULTIVOS DE PRIMAVERA", semestre: "6to semestre", abre: ["TALLER INTEGRADO II", "FUNDAMENTOS DE RIEGO"] },
+      { nombre: "MALHERBOLOGÍA", semestre: "6to semestre", abre: ["MANEJO DE PRADERAS", "HORTICULTURA"] },
+      { nombre: "INGLÉS COMUNICATIVO BÁSICO III", semestre: "7mo semestre", abre: ["INGLÉS COMUNICATIVO BÁSICO IV"] },
+      { nombre: "METODOLOGÍA INVESTIGACIÓN", semestre: "7mo semestre", abre: ["DISEÑO Y ANÁLISIS DE EXPERIMENTOS"] },
+      { nombre: "TALLER INTEGRADO II", semestre: "7mo semestre", abre: ["GESTIÓN DE EMPRESAS AGROPECUARIAS", "GIRA SISTEMAS PRODUCTIVOS DE LA ZONA SUR"] },
+      { nombre: "PRÁCTICA PROFESIONAL II", semestre: "7mo semestre", abre: ["PRÁCTICA PROFESIONAL III"] },
+      { nombre: "FORMULACIÓN Y EVALUACIÓN DE PROYECTOS", semestre: "7mo semestre", abre: ["GESTIÓN DE EMPRESAS AGROPECUARIAS"] },
+      { nombre: "FORRAJERAS", semestre: "7mo semestre", abre: ["MANEJO DE PRADERAS"] },
+      { nombre: "FRUTICULTURA GENERAL", semestre: "7mo semestre", abre: ["FRUTALES DE HOJA CADUCA", "VITIVINICULTURA"] },
+      { nombre: "FUNDAMENTOS DE RIEGO", semestre: "7mo semestre", abre: ["MÉTODOS DE RIEGO"] },
+      { nombre: "CULTIVOS DE OTOÑO", semestre: "7mo semestre", abre: [] },
+      { nombre: "INGLÉS COMUNICATIVO BÁSICO IV", semestre: "8vo semestre", abre: [] },
+      { nombre: "DISEÑO Y ANÁLISIS DE EXPERIMENTOS", semestre: "8vo semestre", abre: ["MEMORIA I"] },
+      { nombre: "COMPLEMENTARIA 5", semestre: "8vo semestre", abre: [] },
+      { nombre: "GESTIÓN DE EMPRESAS AGROPECUARIAS", semestre: "8vo semestre", abre: ["DESARROLLO RURAL", "POST-COSECHA Y AGROINDUSTRIA"] },
+      { nombre: "MANEJO DE PRADERAS", semestre: "8vo semestre", abre: ["GIRA SISTEMAS PRODUCTIVOS DE LA ZONA SUR"] },
+      { nombre: "FRUTALES DE HOJA CADUCA", semestre: "8vo semestre", abre: ["POST-COSECHA Y AGROINDUSTRIA"] },
+      { nombre: "MÉTODOS DE RIEGO", semestre: "8vo semestre", abre: [] },
+      { nombre: "HORTICULTURA", semestre: "8vo semestre", abre: ["POST-COSECHA Y AGROINDUSTRIA"] },
+      { nombre: "ELECTIVA 1", semestre: "9no semestre", abre: [] },
+      { nombre: "MEMORIA I", semestre: "9no semestre", abre: ["MEMORIA II"] },
+      { nombre: "ELECTIVA 2", semestre: "9no semestre", abre: [] },
+      { nombre: "GIRA SISTEMAS PRODUCTIVOS DE LA ZONA SUR", semestre: "9no semestre", abre: [] },
+      { nombre: "PRÁCTICA PROFESIONAL III", semestre: "9no semestre", abre: [] },
+      { nombre: "DESARROLLO RURAL", semestre: "9no semestre", abre: ["POST-COSECHA Y AGROINDUSTRIA"] },
+      { nombre: "POST-COSECHA Y AGROINDUSTRIA", semestre: "9no semestre", abre: ["GIRA SISTEMAS PRODUCTIVOS DE LA ZONA NORTE"] },
+      { nombre: "VITIVINICULTURA", semestre: "9no semestre", abre: ["GIRA SISTEMAS PRODUCTIVOS DE LA ZONA NORTE"] },
+      { nombre: "ELECTIVA 3", semestre: "10mo semestre", abre: [] },
+      { nombre: "MEMORIA II", semestre: "10mo semestre", abre: ["EXAMEN DE TITULO"] },
+      { nombre: "ELECTIVA 4", semestre: "10mo semestre", abre: [] },
+      { nombre: "ELECTIVA 5", semestre: "10mo semestre", abre: [] },
+      { nombre: "EXAMEN DE TITULO", semestre: "10mo semestre", abre: [] },
+      { nombre: "GIRA SISTEMAS PRODUCTIVOS DE LA ZONA NORTE", semestre: "10mo semestre", abre: [] }
+    ];
+
+    const container = document.getElementById("malla-container");
+    const infoBox = document.getElementById("info");
+
+    ramos.forEach(ramo => {
+      const div = document.createElement("div");
+      div.className = "ramo";
+      div.textContent = ramo.nombre;
+      div.onclick = () => showInfo(ramo);
+      container.appendChild(div);
+    });
+
+    function showInfo(ramo) {
+      let html = `<h2>${ramo.nombre}</h2>`;
+      html += `<p><strong>Semestre:</strong> ${ramo.semestre}</p>`;
+      if (ramo.abre.length > 0) {
+        html += `<p><strong>Abre:</strong><ul>`;
+        ramo.abre.forEach(destino => {
+          html += `<li>${destino}</li>`;
+        });
+        html += `</ul></p>`;
+      } else {
+        html += `<p><em>No abre otros ramos.</em></p>`;
+      }
+      infoBox.innerHTML = html;
+      infoBox.style.display = "block";
+      window.scrollTo({
+        top: infoBox.offsetTop,
+        behavior: "smooth"
+      });
+    }
+  </script>
+</body>
+</html>
